@@ -30,7 +30,7 @@ function AddScripturePage() {
     };
 
     return (
-        <div className="max-w-5xl mx-auto p-6 animate-[fadeInUp_0.5s_ease-out_both]">
+        <div className="max-w-7xl mx-auto p-6 animate-[fadeInUp_0.5s_ease-out_both]">
             {/* Header */}
             <div className="mb-8">
                 <button
@@ -81,8 +81,8 @@ function AddScripturePage() {
                                     key={m.id}
                                     onClick={() => setMode(m.id)}
                                     className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all ${mode === m.id
-                                            ? "border-[#94CDFA] bg-[#f0f7ff]"
-                                            : "border-gray-50 bg-white hover:border-gray-100"
+                                        ? "border-[#94CDFA] bg-[#f0f7ff]"
+                                        : "border-gray-50 bg-white hover:border-gray-100"
                                         }`}
                                 >
                                     <div className="flex items-center gap-4">
@@ -109,8 +109,8 @@ function AddScripturePage() {
                                     key={t.id}
                                     onClick={() => setTimeOfDay(t.id)}
                                     className={`flex flex-col items-center justify-center p-6 rounded-2xl border-2 cursor-pointer transition-all ${timeOfDay === t.id
-                                            ? "border-[#94CDFA] bg-[#f0f7ff]"
-                                            : "border-gray-50 bg-white hover:border-gray-100"
+                                        ? "border-[#94CDFA] bg-[#f0f7ff]"
+                                        : "border-gray-50 bg-white hover:border-gray-100"
                                         }`}
                                 >
                                     <span className={`text-[10px] font-black mb-2 ${timeOfDay === t.id ? "text-[#1a2b3c]" : "text-gray-400"}`}>{t.name}</span>
