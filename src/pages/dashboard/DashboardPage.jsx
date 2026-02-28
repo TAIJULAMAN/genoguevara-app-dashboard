@@ -23,34 +23,34 @@ function DashboardPage() {
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="flex flex-col justify-center items-center p-8 bg-[#F2F2F2] rounded-xl gap-2">
-          <p className="text-[#2D8C3C] text-2xl font-bold">200K</p>
+        <div className="flex flex-col justify-center items-center p-8 bg-white border border-primary-light/30 shadow-sm rounded-xl gap-2 hover:shadow-md transition-shadow">
+          <p className="text-primary-dark text-2xl font-bold">200K</p>
           <p className="text-xl font-semibold">Total User</p>
         </div>
-        <div className="flex flex-col justify-center items-center p-8 bg-[#F2F2F2] rounded-xl gap-2">
-          <p className="text-[#2D8C3C] text-2xl font-bold">1200</p>
+        <div className="flex flex-col justify-center items-center p-8 bg-white border border-primary-light/30 shadow-sm rounded-xl gap-2 hover:shadow-md transition-shadow">
+          <p className="text-primary-dark text-2xl font-bold">1200</p>
           <p className="text-xl font-semibold">Total Orders</p>
         </div>
-        <div className="flex flex-col justify-center items-center p-8 bg-[#F2F2F2] rounded-xl gap-2">
-          <p className="text-[#2D8C3C] text-2xl font-bold">$120000</p>
+        <div className="flex flex-col justify-center items-center p-8 bg-white border border-primary-light/30 shadow-sm rounded-xl gap-2 hover:shadow-md transition-shadow">
+          <p className="text-primary-dark text-2xl font-bold">$120000</p>
           <p className="text-xl font-semibold">Total Earnings</p>
         </div>
       </div>
 
-      <div className="w-full p-5 bg-[#F2F2F2] rounded-lg shadow-md mt-5">
+      <div className="w-full p-5 bg-white border border-primary-light/30 rounded-lg shadow-sm mt-5">
         <div className="flex flex-row justify-between items-center gap-5 my-5">
           <div>
-            <h1 className="text-xl text-[#2D8C3C] font-semibold">User Growth</h1>
+            <h1 className="text-xl text-primary-dark font-semibold">User Growth</h1>
           </div>
           <div className="whitespace-nowrap">
             <div className="relative w-full md:w-32">
               {/* Selected Year Display */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-3 py-2 border border-[#2D8C3C] rounded-md flex justify-between items-center bg-white transition"
+                className="w-full px-3 py-2 border border-primary-light rounded-md flex justify-between items-center bg-white transition hover:border-primary"
               >
-                <span className="text-[#2D8C3C]">{selectedYear}</span>
-                <FaChevronDown className="text-[#2D8C3C] w-5 h-5 ml-5" />
+                <span className="text-primary-dark">{selectedYear}</span>
+                <FaChevronDown className="text-primary-dark w-5 h-5 ml-5" />
               </button>
 
               {/* Dropdown List */}
@@ -60,7 +60,7 @@ function DashboardPage() {
                     <div
                       key={year}
                       onClick={() => handleSelect(year)}
-                      className={`p-2 cursor-pointer hover:bg-gray-100 transition ${year === selectedYear ? "bg-[#2D8C3C] text-white" : ""
+                      className={`p-2 cursor-pointer hover:bg-primary-ultralight transition ${year === selectedYear ? "bg-primary text-primary-darker font-bold" : "text-primary-dark"
                         }`}
                     >
                       {year}
@@ -74,7 +74,7 @@ function DashboardPage() {
         <TotalView />
       </div>
       <div className="mt-5">
-        <h1 className="text-2xl text-[#2D8C3C] font-bold mb-5">Recent Joined User</h1>
+        <h1 className="text-2xl text-primary-dark font-bold mb-5">Recent Joined User</h1>
         <RecentUsers />
       </div>
     </div>

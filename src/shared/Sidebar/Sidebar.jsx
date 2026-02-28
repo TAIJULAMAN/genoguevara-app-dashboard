@@ -4,18 +4,10 @@ import { RxDashboard } from "react-icons/rx";
 import { LuUsers } from "react-icons/lu";
 import { IoMdSettings } from "react-icons/io";
 import { IoCloseSharp, IoLogOutOutline } from "react-icons/io5";
-import {
-  MdOutlineInventory2,
-  MdList,
-  MdLocalOffer,
-} from "react-icons/md";
 
 const navItems = [
   { path: "/", label: "Dashboard", icon: RxDashboard },
   { path: "/user-details", label: "User Management", icon: LuUsers },
-  { path: "/earnings", label: "Earnings", icon: MdOutlineInventory2 },
-  { path: "/order-management", label: "Order Management", icon: MdList },
-  { path: "/transactions", label: "Transactions", icon: MdLocalOffer },
   { path: "/settings", label: "Settings", icon: IoMdSettings },
 ];
 
@@ -42,7 +34,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       {/* Close Button (Mobile Only) */}
       <button
         onClick={toggleSidebar}
-        className="absolute top-4 right-4 lg:hidden text-sidebar bg-primary focus:outline-none p-2 rounded-full"
+        className="absolute top-4 right-4 lg:hidden text-sidebar bg-primary-light focus:outline-none p-2 rounded-full hover:bg-primary transition-colors"
       >
         <IoCloseSharp />
       </button>

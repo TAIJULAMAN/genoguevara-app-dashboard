@@ -8,14 +8,14 @@ const MainHeader = ({ toggleSidebar }) => {
 
   return (
     <div className="relative w-full px-5">
-      <header className="shadow-sm rounded-lg border border-primary-light/60 overflow-hidden bg-white">
+      <header className="shadow-sm rounded-lg border border-primary-light/40 overflow-hidden bg-white/80 backdrop-blur-md">
         <div className="flex justify-between items-center px-5 md:px-10 h-[80px]">
           <button
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
-            className="p-2 rounded-lg focus:outline-none transition-all duration-5000 ease-in-out"
+            className="p-2 rounded-lg focus:outline-none transition-all duration-300 ease-in-out hover:bg-primary-light/30"
           >
-            <IoMenu className="w-8 h-8 text-[#0D0D0D]" />
+            <IoMenu className="w-8 h-8 text-primary-dark" />
           </button>
           <div className="flex items-center gap-3">
             {/* Notification */}
@@ -23,22 +23,22 @@ const MainHeader = ({ toggleSidebar }) => {
               type="button"
               aria-label="Notifications"
               onClick={() => navigate('/notifications')}
-              className="relative p-2 rounded-full border border-primary-dark/30 hover:bg-primary-ultralight transition-colors"
+              className="relative p-2 rounded-full border border-primary-light hover:bg-primary-ultralight transition-colors"
             >
-              <IoNotificationsOutline className="w-6 h-6 text-[#0D0D0D]" />
-              <span className="absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary-dark text-white text-[10px] px-1 leading-none font-semibold">3</span>
+              <IoNotificationsOutline className="w-6 h-6 text-primary-dark" />
+              <span className="absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary text-primary-darker text-[10px] px-1 leading-none font-bold">3</span>
             </button>
             <div
               onClick={() => navigate("/profile")}
-              className="flex items-center gap-2 cursor-default"
+              className="flex items-center gap-2 cursor-pointer group"
             >
               <img
                 src="/avatar.png"
-                className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full ring-2 ring-primary/50"
+                className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full ring-2 ring-primary/30 group-hover:ring-primary/60 transition-all"
                 alt="User Avatar"
               />
               <div className="hidden md:block">
-                <h3 className="text-[#0D0D0D] text-lg font-semibold">
+                <h3 className="text-primary-darker text-lg font-semibold">
                   Shah Aman
                 </h3>
                 <p className="text-primary-dark text-sm font-medium">Admin</p>

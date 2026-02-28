@@ -84,15 +84,11 @@ const RecentUsers = () => {
       <ConfigProvider
         theme={{
           components: {
-            InputNumber: {
-              activeBorderColor: "#00c0b5",
-            },
-
             Table: {
-              headerBg: "#2D8C3C",
-              headerColor: "rgb(255,255,255)",
+              headerBg: "#94CDFA",
+              headerColor: "#0F1D2E",
               cellFontSize: 16,
-              headerSplitColor: "#2D8C3C",
+              headerSplitColor: "#94CDFA",
             },
           },
         }}
