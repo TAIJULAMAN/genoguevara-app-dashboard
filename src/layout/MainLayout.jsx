@@ -35,6 +35,7 @@ const MainLayout = () => {
 
   return (
     <div className="flex h-screen relative overflow-hidden bg-primary-50">
+      {/* ── Overlay / Backdrop (Mobile Only) ── */}
       <div
         onClick={toggleSidebar}
         className={`
@@ -51,9 +52,9 @@ const MainLayout = () => {
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* ── Main Content Area ── */}
-      <div className="flex flex-col flex-1 w-full h-screen overflow-hidden transition-all duration-300 ease-out pt-5">
-        {/* Header with subtle slide-down entrance */}
-        <div className="animate-[slideDown_0.4s_ease-out_both]">
+      <div className="flex flex-col flex-1 w-full h-screen overflow-hidden transition-all duration-300 ease-out">
+        {/* Header with slide-down entrance */}
+        <div className="animate-[slideDown_0.4s_ease-out_both] bg-white/40 backdrop-blur-md">
           <MainHeader toggleSidebar={toggleSidebar} />
         </div>
 
@@ -61,7 +62,7 @@ const MainLayout = () => {
         <main
           ref={mainRef}
           className={`
-            p-5 bg-primary-50 flex-1 overflow-auto
+            p-4 lg:p-8 bg-primary-50 flex-1 overflow-auto
             transition-all duration-300 ease-out
             ${pageTransition === "enter"
               ? "opacity-100 translate-y-0 scale-100"
@@ -69,15 +70,14 @@ const MainLayout = () => {
             }
           `}
         >
-          <div className="animate-[fadeInUp_0.5s_ease-out_0.1s_both]">
+          <div className="animate-[fadeInUp_0.5s_ease-out_0.1s_both] max-w-full">
             <Outlet />
           </div>
         </main>
       </div>
 
-      {/* ── Floating ambient glow (decorative) ── */}
-      <div className="pointer-events-none fixed -bottom-32 -right-32 w-96 h-96 rounded-full bg-primary/10 blur-3xl animate-pulse opacity-40" />
-      <div className="pointer-events-none fixed -top-24 -left-24 w-72 h-72 rounded-full bg-primary-dark/5 blur-3xl animate-[pulse_4s_ease-in-out_infinite] opacity-30" />
+      {/* ── Floating ambient glow ── */}
+      <div className="pointer-events-none fixed -bottom-32 -right-32 w-96 h-96 rounded-full bg-primary/5 blur-3xl animate-pulse opacity-40" />
     </div>
   );
 };

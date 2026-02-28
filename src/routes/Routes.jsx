@@ -1,19 +1,16 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import SignInPage from "../pages/auth/SignInPage";
 import ForgetPassword from "../pages/auth/ForgetPassword";
 import VerificationCode from "../pages/auth/VerificationCode";
 import ResetPassword from "../pages/auth/ResetPassword";
 import MainLayout from "../layout/MainLayout";
 import DashboardPage from "../pages/dashboard/DashboardPage";
-import PrivacyPolicy from "../pages/Privacy Policy/PrivacyPolicy";
-import TermsCondition from "../pages/Terms Condition/TermsCondition";
-import UserDetails from "../pages/userDetails/UserDetails";
 import ProfilePage from "../pages/profile/ProfilePage";
-import Settings from "../pages/Settings/Settings";
 import ChangePass from "../pages/profile/ChangePass";
 import EditProfile from "../pages/profile/EditProfile";
-import Listing from "../pages/Listing/Listing";
-
+import ScripturesPage from "../pages/Scriptures/ScripturesPage";
+import AddScripturePage from "../pages/Scriptures/AddScripturePage";
+import AboutUsPage from "../pages/AboutUs/AboutUsPage";
 
 const router = createBrowserRouter([
   {
@@ -39,31 +36,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <Navigate to="/dashboard" replace />,
+      },
+      {
+        path: "/dashboard",
         element: <DashboardPage />,
       },
       {
-        path: "/user-details",
-        element: <UserDetails />,
-      },
-
-      {
-        path: "/order-management",
-        element: <Listing />,
-      },
-
-
-      // settings
-      {
-        path: "/privacy-policy",
-        element: <PrivacyPolicy />,
+        path: "/scriptures",
+        element: <ScripturesPage />,
       },
       {
-        path: "/terms-and-condition",
-        element: <TermsCondition />,
+        path: "/add-scripture",
+        element: <AddScripturePage />,
       },
       {
-        path: "/settings",
-        element: <Settings />,
+        path: "/about-us",
+        element: <AboutUsPage />,
       },
       {
         path: "/edit-profile",

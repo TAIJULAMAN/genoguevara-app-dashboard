@@ -6,14 +6,14 @@ function ChangePass() {
 
   return (
     <div className="bg-white w-full max-w-xl mx-auto px-4 sm:px-6 md:px-8 pt-8 py-5 rounded-md border border-gray-200 shadow-sm">
-      <p className="text-[#2D8C3C] text-center font-bold text-xl sm:text-2xl mb-5">
+      <p className="text-[#94CDFA] text-center font-bold text-xl sm:text-2xl mb-5">
         Change Password
       </p>
       <form className="space-y-4">
         <div className="w-full">
           <label
             htmlFor="password"
-            className="text-sm md:text-base text-[#2D8C3C] mb-2 font-semibold"
+            className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold"
           >
             Current Password
           </label>
@@ -41,7 +41,7 @@ function ChangePass() {
         <div className="w-full">
           <label
             htmlFor="password"
-            className="text-sm md:text-base text-[#2D8C3C] mb-2 font-semibold"
+            className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold"
           >
             New Password
           </label>
@@ -69,7 +69,7 @@ function ChangePass() {
         <div className="w-full">
           <label
             htmlFor="password"
-            className="text-sm md:text-base text-[#2D8C3C] mb-2 font-semibold"
+            className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold"
           >
             Confirm New Password
           </label>
@@ -95,7 +95,7 @@ function ChangePass() {
           </div>
         </div>
         <div className="text-center pt-2">
-          <button className="bg-[#2D8C3C] text-white font-semibold w-full py-3 rounded-md hover:opacity-95 transition">
+          <button className="bg-[#94CDFA] text-white font-semibold w-full py-3 rounded-md hover:opacity-95 transition">
             Save & Change
           </button>
         </div>

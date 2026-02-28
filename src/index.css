@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-/* ── Design System: #BEFFB6 Color Palette ── */
 @theme {
   --color-primary: #94CDFA;
   --color-primary-dark: #1E3A5F;
@@ -13,7 +12,6 @@
   --color-sidebar-hover: #1E3A5F;
 }
 
-/* Prevent layout shift when vertical scrollbar appears/disappears */
 html {
   scrollbar-gutter: stable both-edges;
 }
@@ -30,7 +28,6 @@ body {
   background-color: var(--color-primary-50);
 }
 
-/* ── Layout Animations ── */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -55,7 +52,6 @@ body {
   }
 }
 
-/* ── Smooth scrollbar theming ── */
 ::-webkit-scrollbar {
   width: 6px;
 }

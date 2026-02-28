@@ -1,54 +1,45 @@
-/* eslint-disable react/prop-types */
-
+import { IoMenu } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { IoMenu, IoNotificationsOutline } from "react-icons/io5";
+import PropTypes from "prop-types";
 
 const MainHeader = ({ toggleSidebar }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-full px-5">
-      <header className="shadow-sm rounded-lg border border-primary-light/40 overflow-hidden bg-white/80 backdrop-blur-md">
-        <div className="flex justify-between items-center px-5 md:px-10 h-[80px]">
-          <button
-            onClick={toggleSidebar}
-            aria-label="Toggle sidebar"
-            className="p-2 rounded-lg focus:outline-none transition-all duration-300 ease-in-out hover:bg-primary-light/30"
-          >
-            <IoMenu className="w-8 h-8 text-primary-dark" />
-          </button>
-          <div className="flex items-center gap-3">
-            {/* Notification */}
-            <button
-              type="button"
-              aria-label="Notifications"
-              onClick={() => navigate('/notifications')}
-              className="relative p-2 rounded-full border border-primary-light hover:bg-primary-ultralight transition-colors"
-            >
-              <IoNotificationsOutline className="w-6 h-6 text-primary-dark" />
-              <span className="absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary text-primary-darker text-[10px] px-1 leading-none font-bold">3</span>
-            </button>
-            <div
-              onClick={() => navigate("/profile")}
-              className="flex items-center gap-2 cursor-pointer group"
-            >
-              <img
-                src="/avatar.png"
-                className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full ring-2 ring-primary/30 group-hover:ring-primary/60 transition-all"
-                alt="User Avatar"
-              />
-              <div className="hidden md:block">
-                <h3 className="text-primary-darker text-lg font-semibold">
-                  Shah Aman
-                </h3>
-                <p className="text-primary-dark text-sm font-medium">Admin</p>
-              </div>
-            </div>
+    <div className="w-full h-24 bg-transparent px-4 lg:px-8 flex justify-between lg:justify-end items-center sticky top-0 z-30 transition-all duration-300">
+      {/* Mobile Menu Toggle */}
+      <button
+        onClick={toggleSidebar}
+        className="lg:hidden p-2 text-[#4a3a2a] hover:bg-white/40 rounded-xl transition-colors"
+      >
+        <IoMenu className="w-8 h-8" />
+      </button>
+
+      <div className="flex items-center gap-4 lg:gap-6">
+        {/* User Profile */}
+        <div
+          onClick={() => navigate("/profile")}
+          className="flex items-center gap-3 cursor-pointer group"
+        >
+          <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full ring-2 ring-gray-100 ring-offset-2 overflow-hidden transition-all group-hover:ring-[#94cdfa]">
+            <img
+              src="/avatar.png"
+              className="w-full h-full object-cover"
+              alt="User"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-[#4a3a2a]">Geno Guevara</span>
+            <span className="text-sm text-[#4a3a2a]/60">Admin</span>
           </div>
         </div>
-      </header>
+      </div>
     </div>
   );
+};
+
+MainHeader.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired,
 };
 
 export default MainHeader;

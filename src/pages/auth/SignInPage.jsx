@@ -19,7 +19,7 @@ function SignInPage() {
     <div className="bg-white min-h-screen flex items-center justify-center p-5">
       <div className="container mx-auto">
         <div className="flex  justify-center items-center">
-          <div className="w-full lg:w-1/2 bg-white p-5 md:px-18 md:py-28 shadow-[0px_10px_30px_rgba(0,0,0,0.1)] rounded-2xl">
+          <div className="w-full lg:w-1/2 bg-[#94CDFA] p-5 md:px-18 md:py-28 shadow-[0px_10px_30px_rgba(0,0,0,0.1)] rounded-2xl">
             <div className="flex justify-center items-center mb-10">
               <img src="/logo.png" alt="" />
             </div>
@@ -85,8 +85,8 @@ function SignInPage() {
                           width="21"
                           height="21"
                           rx="4"
-                          className="fill-[#2D8C3C]"
-                          stroke="#2D8C3C"
+                          className="fill-[#94CDFA]"
+                          stroke="#000"
                         ></rect>
                         <path
                           id="Vector"
@@ -112,17 +112,17 @@ function SignInPage() {
                           height="21"
                           rx="4"
                           className="fill-transparent"
-                          stroke="#2D8C3C"
+                          stroke="#000"
                         ></rect>
                       </g>
                     </svg>
                   )}
 
-                  <span className="text-xl text-[#424242]">
+                  <span className="text-xl text-[#000]">
                     Remember Password
                   </span>
                 </label>
-                <Link to="/forget-password" className="text-[#2D8C3C] text-xl font-medium hover:text-[#1E6B2B] transition-colors">
+                <Link to="/forget-password" className="text-[#000] text-xl font-medium">
                   Forgot Password?
                 </Link>
               </div>
@@ -130,7 +130,7 @@ function SignInPage() {
                 <button
                   onClick={() => navigate("/")}
                   type="button"
-                  className="w-1/3 bg-[#2D8C3C] hover:bg-[#1E6B2B] text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer mt-5 transition-colors"
+                  className="w-1/3 bg-[#000] text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer mt-5 transition-colors"
                 >
                   Log In
                 </button>

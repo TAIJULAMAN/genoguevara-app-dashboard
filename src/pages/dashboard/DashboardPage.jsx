@@ -1,81 +1,106 @@
-import { FaChevronDown } from "react-icons/fa";
-import { useState } from "react";
-import dayjs from "dayjs";
-import RecentUsers from "./RecentUsers";
-import TotalView from "./TotalView";
+import { useNavigate } from "react-router-dom";
+import { LuBook, LuCirclePlus, LuHistory, LuLayers } from "react-icons/lu";
+import RecentActivity from "./RecentActivity";
 
 function DashboardPage() {
-  const currentYear = dayjs().year();
-  const startYear = 2020;
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const years = Array.from(
-    { length: currentYear - startYear + 1 },
-    (_, index) => startYear + index
-  );
-
-  const handleSelect = (year) => {
-    setSelectedYear(year);
-    setIsOpen(false);
-  };
+  const stats = [
+    {
+      label: "Total Scriptures",
+      value: "1,248",
+      change: "+4.2%",
+      icon: LuBook,
+      iconBg: "bg-blue-50",
+      iconColor: "text-blue-500",
+    },
+    {
+      label: "Recently Added",
+      value: "12",
+      subtext: "Past 24h",
+      icon: LuCirclePlus,
+      iconBg: "bg-blue-50",
+      iconColor: "text-blue-500",
+    },
+    {
+      label: "Last Updated",
+      value: "2 mins ago",
+      icon: LuHistory,
+      iconBg: "bg-orange-50",
+      iconColor: "text-orange-500",
+    },
+    {
+      label: "Mode Distribution",
+      value: "3 Active",
+      icon: LuLayers,
+      iconBg: "bg-purple-50",
+      iconColor: "text-purple-500",
+    },
+  ];
 
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="flex flex-col justify-center items-center p-8 bg-white border border-primary-light/30 shadow-sm rounded-xl gap-2 hover:shadow-md transition-shadow">
-          <p className="text-primary-dark text-2xl font-bold">200K</p>
-          <p className="text-xl font-semibold">Total User</p>
-        </div>
-        <div className="flex flex-col justify-center items-center p-8 bg-white border border-primary-light/30 shadow-sm rounded-xl gap-2 hover:shadow-md transition-shadow">
-          <p className="text-primary-dark text-2xl font-bold">1200</p>
-          <p className="text-xl font-semibold">Total Orders</p>
-        </div>
-        <div className="flex flex-col justify-center items-center p-8 bg-white border border-primary-light/30 shadow-sm rounded-xl gap-2 hover:shadow-md transition-shadow">
-          <p className="text-primary-dark text-2xl font-bold">$120000</p>
-          <p className="text-xl font-semibold">Total Earnings</p>
-        </div>
+    <div className="flex flex-col gap-8 animate-[fadeIn_0.5s_ease-out]">
+      {/* Header Section */}
+      <div>
+        <h1 className="text-4xl font-black text-[#1a2b3c] mb-1">Admin Dashboard</h1>
+        <p className="text-gray-400 font-medium">Platform Overview</p>
       </div>
 
-      <div className="w-full p-5 bg-white border border-primary-light/30 rounded-lg shadow-sm mt-5">
-        <div className="flex flex-row justify-between items-center gap-5 my-5">
-          <div>
-            <h1 className="text-xl text-primary-dark font-semibold">User Growth</h1>
-          </div>
-          <div className="whitespace-nowrap">
-            <div className="relative w-full md:w-32">
-              {/* Selected Year Display */}
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-3 py-2 border border-primary-light rounded-md flex justify-between items-center bg-white transition hover:border-primary"
-              >
-                <span className="text-primary-dark">{selectedYear}</span>
-                <FaChevronDown className="text-primary-dark w-5 h-5 ml-5" />
-              </button>
-
-              {/* Dropdown List */}
-              {isOpen && (
-                <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto shadow-lg text-lg">
-                  {years.map((year) => (
-                    <div
-                      key={year}
-                      onClick={() => handleSelect(year)}
-                      className={`p-2 cursor-pointer hover:bg-primary-ultralight transition ${year === selectedYear ? "bg-primary text-primary-darker font-bold" : "text-primary-dark"
-                        }`}
-                    >
-                      {year}
-                    </div>
-                  ))}
-                </div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => (
+          <div key={index} className="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+            <div className="flex justify-between items-start mb-4">
+              <div className={`p-3 rounded-xl ${stat.iconBg} ${stat.iconColor} transition-transform group-hover:scale-110`}>
+                <stat.icon className="w-6 h-6" />
+              </div>
+              {stat.change && (
+                <span className="bg-green-50 text-green-600 text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-wider">
+                  {stat.change}
+                </span>
+              )}
+              {stat.subtext && (
+                <span className="text-gray-300 text-[10px] font-bold uppercase tracking-wider">
+                  {stat.subtext}
+                </span>
               )}
             </div>
+            <div>
+              <p className="text-gray-400 text-sm font-bold mb-1">{stat.label}</p>
+              <h3 className="text-3xl font-black text-[#1a2b3c]">{stat.value}</h3>
+            </div>
           </div>
-        </div>
-        <TotalView />
+        ))}
       </div>
-      <div className="mt-5">
-        <h1 className="text-2xl text-primary-dark font-bold mb-5">Recent Joined User</h1>
-        <RecentUsers />
+
+      {/* Quick Actions */}
+      <div className="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+          <h2 className="text-xl font-black text-[#1a2b3c] mb-1">Quick Actions</h2>
+          <p className="text-gray-400 text-sm font-medium">Manage your library content efficiently</p>
+        </div>
+        <button
+          onClick={() => navigate("/add-scripture")}
+          className="bg-[#94cdfa] text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-blue-100 hover:bg-[#83bce9] transition-all transform hover:scale-[1.02]"
+        >
+          <span className="text-xl font-black">+</span> Add New Scripture
+        </button>
+      </div>
+
+      {/* Recent Activity Section */}
+      <div className="bg-white rounded-[24px] border border-gray-100 shadow-sm overflow-hidden mb-10">
+        <div className="p-6 border-b border-gray-50 flex justify-between items-center bg-white/50 backdrop-blur-sm sticky top-0 z-10">
+          <h2 className="text-xl font-black text-[#1a2b3c]">Recent Activity</h2>
+          <button
+            onClick={() => navigate("/scriptures")}
+            className="text-[#94cdfa] text-sm font-bold hover:underline"
+          >
+            View all library
+          </button>
+        </div>
+        <div className="p-2">
+          <RecentActivity />
+        </div>
       </div>
     </div>
   );
