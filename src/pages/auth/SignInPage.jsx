@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogInMutation } from "../../../Redux/features/auth/authApi";
@@ -12,6 +12,16 @@ function SignInPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logIn, { isLoading }] = useLogInMutation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setIsChecked(true);
+    }
+  }, []);
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -19,13 +29,15 @@ function SignInPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
 
     try {
       const res = await logIn({ email, password }).unwrap();
       if (res?.success) {
+        if (isChecked) {
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
         const { user, accessToken, refreshToken } = res.data;
         dispatch(
           setUser({
@@ -63,6 +75,8 @@ function SignInPage() {
                 <input
                   type="email"
                   name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="enter your gmail"
                   className="w-full px-5 py-3 border-2 border-[#6A6D76] rounded-md outline-none mt-2 placeholder:text-lg bg-white"
                   required
@@ -76,6 +90,8 @@ function SignInPage() {
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="**********"
                     className="w-full border-2 border-[#6A6D76] rounded-md outline-none px-5 py-3 mt-2 placeholder:text-lg bg-white"
                     required
@@ -99,6 +115,7 @@ function SignInPage() {
                   <input
                     type="checkbox"
                     className="hidden"
+                    checked={isChecked}
                     onChange={handleCheckboxChange}
                   />
                   {isChecked ? (
