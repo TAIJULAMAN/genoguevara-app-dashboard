@@ -10,7 +10,7 @@ export const baseApi = createApi({
       let token = state?.auth?.token;
 
       if (!token && typeof window !== "undefined") {
-        token = localStorage.getItem("token");
+        token = localStorage.getItem("accessToken");
       }
 
       if (token) {
@@ -20,5 +20,5 @@ export const baseApi = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["auth", "profile", "content"],
+  tagTypes: ["auth"],
 });

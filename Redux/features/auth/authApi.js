@@ -2,20 +2,9 @@ import { baseApi } from "../baseApi";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    signUp: builder.mutation({
-      query: (data) => {
-        // console.log("Data being sent to the API:", data);
-        return {
-          url: "auth/create-user",
-          method: "POST",
-          body: data,
-        };
-      },
-      invalidatesTags: ["auth"],
-    }),
     logIn: builder.mutation({
       query: (data) => {
-        console.log("Data being sent to the API:", data);
+        // console.log("Data being sent to the API:", data);
         return {
           url: "auth/login",
           method: "POST",
@@ -59,7 +48,6 @@ const authApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useSignUpMutation,
   useLogInMutation,
   useForgotPasswordMutation,
   useVerifyEmailMutation,

@@ -18,7 +18,7 @@ export const authSlice = createSlice({
       state.refreshToken = refreshToken;
 
       if (typeof window !== "undefined") {
-        if (token) localStorage.setItem("token", token);
+        if (token) localStorage.setItem("accessToken", token);
         if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
         if (user) localStorage.setItem("user", JSON.stringify(user));
       }
@@ -30,7 +30,7 @@ export const authSlice = createSlice({
 
       // Clear localStorage
       if (typeof window !== "undefined") {
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("user");
       }

@@ -1,43 +1,75 @@
 import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
+import { useLogInMutation } from "../../../Redux/features/auth/authApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../Redux/Slice/authSlice";
+import { message, Spin } from "antd";
 
 function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [logIn, { isLoading }] = useLogInMutation();
 
   const handleCheckboxChange = (event) => {
-    if (event.target.checked) {
-      setIsChecked(true);
-    } else {
-      setIsChecked(false);
+    setIsChecked(event.target.checked);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const res = await logIn({ email, password }).unwrap();
+      if (res?.success) {
+        const { user, accessToken, refreshToken } = res.data;
+        dispatch(
+          setUser({
+            user,
+            token: accessToken,
+            refreshToken,
+          }),
+        );
+        message.success(res.message || "Login successful");
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      message.error(
+        err?.data?.message ||
+          err?.message ||
+          "Something went wrong. Please try again.",
+      );
     }
   };
 
   return (
     <div className="bg-white min-h-screen flex items-center justify-center p-5">
       <div className="container mx-auto">
-        <div className="flex  justify-center items-center">
+        <div className="flex justify-center items-center">
           <div className="w-full lg:w-1/2 bg-[#94CDFA] p-5 md:px-18 md:py-28 shadow-[0px_10px_30px_rgba(0,0,0,0.1)] rounded-2xl">
             <div className="flex justify-center items-center mb-10">
-              <img src="/logo.png" alt="" />
+              <img src="/logo.png" alt="Logo" />
             </div>
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="w-full">
-                <label className="text-xl text-[#0D0D0D] mb-2 font-bold">
+                <label className="text-xl text-[#0D0D0D] mb-2 font-bold block">
                   Email
                 </label>
                 <input
                   type="email"
                   name="email"
                   placeholder="enter your gmail"
-                  className="w-full px-5 py-3 border-2 border-[#6A6D76] rounded-md outline-none mt-5 placeholder:text-xl"
+                  className="w-full px-5 py-3 border-2 border-[#6A6D76] rounded-md outline-none mt-2 placeholder:text-lg bg-white"
                   required
                 />
               </div>
               <div className="w-full">
-                <label className="text-xl text-[#0D0D0D] mb-2 font-bold">
+                <label className="text-xl text-[#0D0D0D] mb-2 font-bold block">
                   Password
                 </label>
                 <div className="w-full relative">
@@ -45,13 +77,13 @@ function SignInPage() {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="**********"
-                    className="w-full border-2 border-[#6A6D76] rounded-md outline-none px-5 py-3 mt-5 placeholder:text-xl"
+                    className="w-full border-2 border-[#6A6D76] rounded-md outline-none px-5 py-3 mt-2 placeholder:text-lg bg-white"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 bottom-4 flex items-center text-[#6A6D76]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 mt-1 flex items-center text-[#6A6D76]"
                   >
                     {showPassword ? (
                       <IoEyeOffOutline className="w-5 h-5" />
@@ -85,7 +117,7 @@ function SignInPage() {
                           width="21"
                           height="21"
                           rx="4"
-                          className="fill-[#94CDFA]"
+                          className="fill-[#4a3a2a]"
                           stroke="#000"
                         ></rect>
                         <path
@@ -118,21 +150,23 @@ function SignInPage() {
                     </svg>
                   )}
 
-                  <span className="text-xl text-[#000]">
-                    Remember Password
-                  </span>
+                  <span className="text-xl text-[#000]">Remember Password</span>
                 </label>
-                <Link to="/forget-password" className="text-[#000] text-xl font-medium">
+                <Link
+                  to="/forget-password"
+                  className="text-[#000] text-xl font-medium hover:underline"
+                >
                   Forgot Password?
                 </Link>
               </div>
               <div className="flex justify-center items-center">
                 <button
-                  onClick={() => navigate("/")}
-                  type="button"
-                  className="w-1/3 bg-[#000] text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer mt-5 transition-colors"
+                  disabled={isLoading}
+                  type="submit"
+                  className="w-1/3 bg-[#4a3a2a] text-white font-bold py-3 rounded-lg shadow-lg cursor-pointer mt-5 transition-all hover:opacity-90 disabled:opacity-70 flex justify-center items-center gap-2"
                 >
-                  Log In
+                  {isLoading && <Spin size="small" />}
+                  {isLoading ? "Logging In..." : "Log In"}
                 </button>
               </div>
             </form>
