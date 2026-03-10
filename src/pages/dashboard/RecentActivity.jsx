@@ -1,40 +1,39 @@
 import { ConfigProvider, Table } from "antd";
-import { MdEdit } from "react-icons/md";
 
 const RecentActivity = () => {
   const dataSource = [
     {
       key: "1",
       title: "Psalm 23:1-4",
-      mode: "Morning",
+      mode: "Prayer",
       time: "08:30 AM",
       date: "Oct 24, 2023",
     },
     {
       key: "2",
       title: "Philippians 4:6-7",
-      mode: "Night Prayer",
+      mode: "Reflection",
       time: "09:15 PM",
       date: "Oct 23, 2023",
     },
     {
       key: "3",
       title: "Isaiah 41:10",
-      mode: "Deep Study",
+      mode: "Meditation",
       time: "12:45 PM",
       date: "Oct 22, 2023",
     },
     {
       key: "4",
       title: "Proverbs 3:5-6",
-      mode: "Morning",
+      mode: "Prayer",
       time: "08:35 AM",
       date: "Oct 22, 2023",
     },
     {
       key: "5",
       title: "John 14:27",
-      mode: "Night Prayer",
+      mode: "Reflection",
       time: "10:00 PM",
       date: "Oct 21, 2023",
     },
@@ -45,44 +44,45 @@ const RecentActivity = () => {
       title: "TITLE",
       dataIndex: "title",
       key: "title",
-      render: (text) => <span className="font-bold text-[#1a2b3c]">{text}</span>
+      render: (text) => (
+        <span className="font-bold text-[#4a3a2a]">{text}</span>
+      ),
     },
     {
       title: "MODE",
       dataIndex: "mode",
       key: "mode",
       render: (mode) => {
-        const styles = {
-          "Morning": "bg-blue-50 text-blue-500",
-          "Night Prayer": "bg-purple-50 text-purple-600",
-          "Deep Study": "bg-orange-50 text-orange-600",
+        const colors = {
+          Prayer: "bg-blue-50 text-blue-500 border-blue-100",
+          Reflection: "bg-[#94cdfa]/10 text-[#4a3a2a] border-[#94cdfa]/20",
+          Meditation: "bg-[#4a3a2a]/10 text-[#4a3a2a] border-[#4a3a2a]/20",
         };
         return (
-          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tight ${styles[mode] || "bg-gray-50 text-gray-500"}`}>
+          <span
+            className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tight border ${
+              colors[mode] || "bg-gray-50 text-gray-500"
+            }`}
+          >
             {mode}
           </span>
         );
-      }
+      },
     },
     {
       title: "TIME",
       dataIndex: "time",
       key: "time",
-      render: (text) => <span className="text-gray-400 font-medium">{text}</span>
+      render: (text) => (
+        <span className="text-[#4a3a2a]/60 font-medium">{text}</span>
+      ),
     },
     {
       title: "DATE",
       dataIndex: "date",
       key: "date",
-      render: (text) => <span className="text-gray-400 font-medium">{text}</span>
-    },
-    {
-      title: "ACTIONS",
-      key: "actions",
-      render: () => (
-        <button className="text-gray-300 hover:text-[#94cdfa] transition-colors">
-          <MdEdit className="w-5 h-5" />
-        </button>
+      render: (text) => (
+        <span className="text-[#4a3a2a]/60 font-medium">{text}</span>
       ),
     },
   ];
@@ -91,38 +91,48 @@ const RecentActivity = () => {
     <ConfigProvider
       theme={{
         components: {
+          InputNumber: {
+            activeBorderColor: "#FF0000",
+          },
+          Pagination: {
+            colorPrimaryBorder: "#FF0000",
+            colorBorder: "#FF0000",
+            colorPrimaryHover: "#FF0000",
+            colorTextPlaceholder: "#FF0000",
+            itemActiveBgDisabled: "#FF0000",
+            colorPrimary: "#FF0000",
+          },
           Table: {
-            headerBg: "#f9fafb",
-            headerColor: "#9ca3af",
-            headerFontSize: 10,
-            headerFontWeight: 900,
-            cellPaddingBlock: 16,
-            cellFontSize: 14,
-            headerSplitColor: "transparent",
+            headerBg: "#4a3a2a",
+            headerColor: "rgb(255,255,255)",
+            cellFontSize: 16,
+            headerSplitColor: "#4a3a2a",
           },
         },
       }}
     >
-      <Table
-        dataSource={dataSource}
-        columns={columns}
-        pagination={false}
-        scroll={{ x: "max-content" }}
-        className="recent-activity-table"
-      />
+      <div className="recent-activity-table">
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          pagination={false}
+          scroll={{ x: "max-content" }}
+          bordered={false}
+        />
+      </div>
       <style>{`
         .recent-activity-table .ant-table {
           background: transparent !important;
         }
         .recent-activity-table .ant-table-thead > tr > th {
           letter-spacing: 0.05em;
-          border-bottom: 1px solid #f9fafb;
+          border-bottom: 2px solid #f8f9fa !important;
         }
         .recent-activity-table .ant-table-tbody > tr > td {
-          border-bottom: 1px solid #f9fafb;
+          border-bottom: 1px solid #f8f9fa !important;
         }
         .recent-activity-table .ant-table-tbody > tr:hover > td {
-          background: #fcfdfe !important;
+          background: #fdfdfd !important;
         }
       `}</style>
     </ConfigProvider>
