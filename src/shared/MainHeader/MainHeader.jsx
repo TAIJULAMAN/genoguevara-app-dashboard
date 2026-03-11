@@ -1,9 +1,13 @@
 import { IoMenu } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useGetProfileQuery } from "../../../Redux/features/settings/profileApi";
+import { imgUrl } from "../../../config/envConfig";
 
 const MainHeader = ({ toggleSidebar }) => {
   const navigate = useNavigate();
+  const { data: profileData } = useGetProfileQuery();
+  const user = profileData?.data;
 
   return (
     <div className="w-full h-24 bg-[#94cdfa]/10 backdrop-blur-md px-5 flex justify-between lg:justify-end items-center sticky top-0 z-30 transition-all duration-300">
@@ -17,16 +21,27 @@ const MainHeader = ({ toggleSidebar }) => {
         onClick={() => navigate("/profile")}
         className="flex items-center gap-3 cursor-pointer group"
       >
-        <div className="w-10 h-10 rounded-full overflow-hidden">
+        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
           <img
-            src="/avatar.png"
+            src={
+              user?.profile_image
+                ? `${imgUrl}${user.profile_image}`
+                : "/avatar.png"
+            }
             className="w-full h-full object-cover"
             alt="User"
+            onError={(e) => {
+              e.target.src = "/avatar.png";
+            }}
           />
         </div>
         <div className="flex flex-col">
-          <span className="text-lg font-bold text-[#4a3a2a]">Geno Guevara</span>
-          <span className="text-sm text-[#4a3a2a]/60">Admin</span>
+          <span className="text-lg font-bold text-[#4a3a2a]">
+            {user?.fullName || "Geno Guevara"}
+          </span>
+          <span className="text-sm text-[#4a3a2a]/60 capitalize">
+            {user?.role || "Admin"}
+          </span>
         </div>
       </div>
     </div>

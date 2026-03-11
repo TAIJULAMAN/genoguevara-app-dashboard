@@ -40,6 +40,22 @@ export const scripturesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["scriptures"],
     }),
+    getRecentScriptures: builder.query({
+      query: (params) => ({
+        url: "scriptures/recent",
+        method: "GET",
+        params,
+      }),
+      providesTags: ["scriptures"],
+    }),
+    getScriptureStats: builder.query({
+      query: (params) => ({
+        url: "scriptures/stats",
+        method: "GET",
+        params,
+      }),
+      providesTags: ["scriptures"],
+    }),
   }),
 });
 
@@ -49,4 +65,6 @@ export const {
   useGetScriptureByIdQuery,
   useCreateScripturesMutation,
   useUpdateScripturesMutation,
+  useGetRecentScripturesQuery,
+  useGetScriptureStatsQuery,
 } = scripturesApi;

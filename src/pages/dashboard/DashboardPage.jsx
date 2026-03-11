@@ -1,51 +1,64 @@
+import { Spin } from "antd";
+import { useGetScriptureStatsQuery } from "../../../Redux/features/scriptures/scripturesApi";
 import { useNavigate } from "react-router-dom";
 import { LuBook, LuCirclePlus, LuHistory } from "react-icons/lu";
 import RecentActivity from "./RecentActivity";
 
 function DashboardPage() {
   const navigate = useNavigate();
+  const { data, isLoading } = useGetScriptureStatsQuery();
+  const scriptureStats = data?.data;
 
   const stats = [
     {
       label: "Total Scriptures",
-      value: "1,248",
+      value: scriptureStats?.totalScriptures || 0,
       icon: LuBook,
     },
     {
       label: "Recently Added",
-      value: "12",
+      value: scriptureStats?.recentlyAdded || 0,
       icon: LuCirclePlus,
     },
     {
       label: "Last Updated",
       icon: LuHistory,
-      value: "2 mins ago",
+      value:
+        scriptureStats?.lastUpdatedHoursAgo !== undefined
+          ? `${scriptureStats.lastUpdatedHoursAgo} hours ago`
+          : "N/A",
     },
   ];
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {stats.map((stat, index) => (
-          <div key={index} className="bg-white p-5 rounded-md shadow-sm">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-gray-400 text-sm font-bold mb-1">
-                  {stat.label}
-                </p>
-                <h3 className="text-3xl font-black text-[#1a2b3c]">
-                  {stat.value}
-                </h3>
-              </div>
-              <div
-                className={`p-3 rounded-xl transition-transform bg-primary-50`}
-              >
-                <stat.icon className="w-6 h-6 text-[#4a3a2a]" />
+      {isLoading ? (
+        <div className="flex justify-center items-center py-10 bg-white rounded-md shadow-sm">
+          <Spin size="large" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {stats.map((stat, index) => (
+            <div key={index} className="bg-white p-5 rounded-md shadow-sm">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-gray-400 text-sm font-bold mb-1">
+                    {stat.label}
+                  </p>
+                  <h3 className="text-3xl font-black text-[#1a2b3c]">
+                    {stat.value}
+                  </h3>
+                </div>
+                <div
+                  className={`p-3 rounded-xl transition-transform bg-primary-50`}
+                >
+                  <stat.icon className="w-6 h-6 text-[#4a3a2a]" />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       <div className="bg-white p-5 rounded-md shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
         <div>
           <h2 className="text-xl font-black text-[#1a2b3c]">Quick Actions</h2>

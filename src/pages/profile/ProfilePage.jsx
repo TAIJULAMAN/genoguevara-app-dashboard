@@ -4,10 +4,38 @@ import { FaCamera } from "react-icons/fa";
 import EditProfile from "./EditProfile";
 import ChangePass from "./ChangePass";
 import { IoChevronBack } from "react-icons/io5";
+import { useGetProfileQuery, useUpdateProfileMutation } from "../../../Redux/features/settings/profileApi";
+import { imgUrl } from "../../../config/envConfig";
+import { message } from "antd";
 
 function ProfilePage() {
   const [activeTab, setActiveTab] = useState("editProfile");
   const navigate = useNavigate();
+  const { data: profileData, isLoading } = useGetProfileQuery();
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const user = profileData?.data;
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("profileImage", file);
+      try {
+        await updateProfile(formData).unwrap();
+        message.success("Profile picture updated successfully");
+      } catch (error) {
+        message.error(error?.data?.message || "Failed to update profile picture");
+      }
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#94CDFA]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-y-auto">
@@ -28,22 +56,28 @@ function ProfilePage() {
             <div className="relative">
               <div className="w-[122px] h-[122px] bg-gray-300 rounded-full border-4 border-white shadow-xl flex justify-center items-center">
                 <img
-                  src="https://avatar.iran.liara.run/public/44"
+                  src={user?.profile_image ? `${imgUrl}${user.profile_image}` : "https://avatar.iran.liara.run/public/44"}
                   alt="profile"
-                  className="h-30 w-32 rounded-full"
+                  className="h-[114px] w-[114px] rounded-full object-cover"
                 />
                 {/* Upload Icon */}
                 <div className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md cursor-pointer">
                   <label htmlFor="profilePicUpload" className="cursor-pointer">
                     <FaCamera className="text-[#575757]" />
                   </label>
-                  <input type="file" id="profilePicUpload" className="hidden" />
+                  <input 
+                    type="file" 
+                    id="profilePicUpload" 
+                    className="hidden" 
+                    onChange={handleImageUpload}
+                    disabled={isUpdating}
+                  />
                 </div>
               </div>
             </div>
             <div className="text-center md:text-left">
-              <p className="text-lg sm:text-xl md:text-3xl font-bold">Shah Aman</p>
-              <p className="text-base sm:text-lg font-semibold">Admin</p>
+              <p className="text-lg sm:text-xl md:text-3xl font-bold">{user?.fullName || "User Name"}</p>
+              <p className="text-base sm:text-lg font-semibold">{user?.role || "Admin"}</p>
             </div>
           </div>
 
