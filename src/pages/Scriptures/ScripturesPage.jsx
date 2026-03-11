@@ -1,8 +1,12 @@
-import { ConfigProvider, Modal, Table, Select } from "antd";
-import { useMemo, useState } from "react";
+import { ConfigProvider, Modal, Table, Select, message, Spin } from "antd";
+import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import {
+  useDeleteScripturesMutation,
+  useGetAllScripturesQuery,
+} from "../../../Redux/features/scriptures/scripturesApi";
 
 function ScripturesPage() {
   const navigate = useNavigate();
@@ -11,43 +15,28 @@ function ScripturesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [modeFilter, setModeFilter] = useState("All");
   const [timeFilter, setTimeFilter] = useState("Any");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [dataSource, setDataSource] = useState([
-    {
-      key: "1",
-      title: "Serenity Prayer",
-      content: "God grant me the serenity to accept the thin...",
-      mode: "Prayer",
-      time: "Morning",
-      date: "Oct 24, 2023",
-    },
-    {
-      key: "2",
-      title: "Daily Reflection",
-      content: "The spiritual life is not a theory. We have to li...",
-      mode: "Reflection",
-      time: "Evening",
-      date: "Oct 22, 2023",
-    },
-    {
-      key: "3",
-      title: "Silent Awareness",
-      content: "Focus on the breath as it enters and leaves t...",
-      mode: "Meditation",
-      time: "Any",
-      date: "Oct 19, 2023",
-    },
-    {
-      key: "4",
-      title: "Gratitude Listing",
-      content: "List five things you are grateful for today, no...",
-      mode: "Reflection",
-      time: "Noon",
-      date: "Oct 15, 2023",
-    },
-  ]);
+  const { data, isLoading, isError } = useGetAllScripturesQuery({
+    search: searchQuery || undefined,
+    mode: modeFilter === "All" ? undefined : modeFilter,
+    timeOfDay: timeFilter === "Any" ? undefined : timeFilter,
+    page: currentPage,
+    limit: 10,
+  });
+
+  const [deleteScripture] = useDeleteScripturesMutation();
+
+  const dataSource = data?.data || [];
+  const pagination = data?.meta || {};
 
   const columns = [
+    {
+      title: "Author",
+      dataIndex: "author",
+      key: "author",
+      render: (text) => <span className="text-gray-600">{text}</span>,
+    },
     {
       title: "Title",
       dataIndex: "title",
@@ -76,7 +65,7 @@ function ScripturesPage() {
         };
         return (
           <span
-            className={`px-3 py-1 rounded-full text-[10px] font-bold border ${colors[mode] || "bg-gray-50 text-gray-600 border-gray-100"}`}
+            className={`px-3 py-1 rounded-full text-[10px] font-bold border ${colors[mode] || "bg-blue-50 text-blue-600 border-blue-100"}`}
           >
             {mode}
           </span>
@@ -85,8 +74,8 @@ function ScripturesPage() {
     },
     {
       title: "Time",
-      dataIndex: "time",
-      key: "time",
+      dataIndex: "timeOfDay",
+      key: "timeOfDay",
       render: (time) => (
         <span className="bg-gray-50 text-gray-600 border border-gray-100 px-3 py-1 rounded-full text-[10px] font-bold">
           {time}
@@ -95,9 +84,13 @@ function ScripturesPage() {
     },
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
-      render: (text) => <span className="text-gray-600 text-sm">{text}</span>,
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => (
+        <span className="text-gray-600 text-sm">
+          {new Date(text).toLocaleDateString()}
+        </span>
+      ),
     },
     {
       title: "Actions",
@@ -105,7 +98,7 @@ function ScripturesPage() {
       render: (_, record) => (
         <div className="flex gap-3">
           <button
-            onClick={() => console.log("Edit", record)}
+            onClick={() => navigate(`/edit-scripture/${record._id}`)}
             className="text-gray-400 hover:text-blue-500 transition"
           >
             <MdEdit className="w-5 h-5" />
@@ -121,30 +114,20 @@ function ScripturesPage() {
     },
   ];
 
-  const filteredData = useMemo(() => {
-    return dataSource.filter((r) => {
-      const matchSearch =
-        searchQuery.toLowerCase() === "" ||
-        [r.title, r.content].some((v) =>
-          v.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
-      const matchMode = modeFilter === "All" || r.mode === modeFilter;
-      const matchTime = timeFilter === "Any" || r.time === timeFilter;
-      return matchSearch && matchMode && matchTime;
-    });
-  }, [dataSource, searchQuery, modeFilter, timeFilter]);
-
   const openDelete = (row) => {
     setSelectedScripture(row);
     setIsModalOpen(true);
   };
 
-  const confirmDelete = () => {
-    setDataSource(
-      dataSource.filter((item) => item.key !== selectedScripture.key),
-    );
-    setIsModalOpen(false);
-    setSelectedScripture(null);
+  const confirmDelete = async () => {
+    try {
+      await deleteScripture(selectedScripture._id).unwrap();
+      message.success("Scripture deleted successfully");
+      setIsModalOpen(false);
+      setSelectedScripture(null);
+    } catch (error) {
+      message.error(error?.data?.message || "Failed to delete scripture");
+    }
   };
 
   return (
@@ -206,41 +189,60 @@ function ScripturesPage() {
 
             <Select
               value={modeFilter}
-              onChange={setModeFilter}
+              onChange={(val) => {
+                setModeFilter(val);
+                setCurrentPage(1);
+              }}
               className="min-w-[120px] h-12 rounded-lg custom-select"
               options={[
                 { label: "Mode: All", value: "All" },
-                { label: "Prayer", value: "Prayer" },
-                { label: "Reflection", value: "Reflection" },
-                { label: "Meditation", value: "Meditation" },
+                { label: "Dr. Bob", value: "Dr. Bob" },
+                { label: "Big Book Thumper", value: "Big Book Thumper" },
               ]}
             />
 
             <Select
               value={timeFilter}
-              onChange={setTimeFilter}
+              onChange={(val) => {
+                setTimeFilter(val);
+                setCurrentPage(1);
+              }}
               className="min-w-[120px] h-12 rounded-lg custom-select"
               options={[
                 { label: "Time: Any", value: "Any" },
                 { label: "Morning", value: "Morning" },
-                { label: "Noon", value: "Noon" },
-                { label: "Evening", value: "Evening" },
+                { label: "Night", value: "Night" },
+                { label: "Midday", value: "Midday" },
               ]}
             />
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4">
-          <Table
-            dataSource={filteredData}
-            columns={columns}
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: false,
-              className: "custom-pagination px-4 py-4",
-            }}
-            scroll={{ x: "max-content" }}
-          />
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4 min-h-[400px]">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Spin size="large" />
+            </div>
+          ) : isError ? (
+            <div className="flex justify-center items-center h-64 text-red-500">
+              Failed to load scriptures. Please try again later.
+            </div>
+          ) : (
+            <Table
+              rowKey="_id"
+              dataSource={dataSource}
+              columns={columns}
+              pagination={{
+                current: currentPage,
+                pageSize: 10,
+                total: pagination.total,
+                onChange: (page) => setCurrentPage(page),
+                showSizeChanger: false,
+                className: "custom-pagination px-4 py-4",
+              }}
+              scroll={{ x: "max-content" }}
+            />
+          )}
         </div>
       </ConfigProvider>
 

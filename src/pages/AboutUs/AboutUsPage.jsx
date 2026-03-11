@@ -1,14 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoChevronBack } from "react-icons/io5";
+import {
+  useGetAboutUsQuery,
+  useCreateAboutUsMutation,
+} from "../../../Redux/features/settings/aboutUsApi";
+import { message, Spin } from "antd";
 
 function AboutUs() {
-  const [content, setContent] = useState(
-    "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum.",
-  );
+  const [content, setContent] = useState("");
   const navigate = useNavigate();
+
+  const { data: aboutData, isLoading: isFetching } = useGetAboutUsQuery();
+  const [createAboutUs, { isLoading: isUpdating }] = useCreateAboutUsMutation();
+
+  useEffect(() => {
+    if (aboutData?.data?.about) {
+      setContent(aboutData.data.about);
+    }
+  }, [aboutData]);
+
+  const handleSave = async () => {
+    try {
+      const res = await createAboutUs({ about: content }).unwrap();
+      if (res?.success) {
+        message.success(res?.message || "About Us updated successfully");
+      }
+    } catch (err) {
+      console.error("Update error:", err);
+      message.error(
+        err?.data?.message || err?.message || "Failed to update About Us",
+      );
+    }
+  };
 
   return (
     <div>
@@ -23,20 +49,29 @@ function AboutUs() {
         <h1 className="text-white text-2xl font-bold">About Us</h1>
       </div>
 
-      <div className=" bg-white rounded shadow p-5 h-full">
-        <ReactQuill
-          style={{ padding: "10px" }}
-          theme="snow"
-          value={content}
-          onChange={setContent}
-        />
+      <div className=" bg-white rounded shadow p-5 h-full relative border border-gray-100 min-h-[400px]">
+        {isFetching ? (
+          <div className="flex justify-center items-center h-64">
+            <Spin size="large" tip="Loading content..." />
+          </div>
+        ) : (
+          <ReactQuill
+            style={{ padding: "10px", height: "350px" }}
+            theme="snow"
+            value={content}
+            onChange={setContent}
+            className="mb-10"
+          />
+        )}
       </div>
       <div className="text-center py-5">
         <button
-          onClick={() => console.log(content)}
-          className="bg-[#4a3a2a] text-white font-semibold w-full py-2 rounded"
+          disabled={isUpdating || isFetching}
+          onClick={handleSave}
+          className="bg-[#4a3a2a] text-white font-semibold w-full py-3 rounded-lg shadow-md cursor-pointer transition-all hover:opacity-90 disabled:opacity-70 flex justify-center items-center gap-2"
         >
-          Save changes
+          {isUpdating && <Spin size="small" />}
+          {isUpdating ? "Saving..." : "Save changes"}
         </button>
       </div>
     </div>

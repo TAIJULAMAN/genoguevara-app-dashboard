@@ -6,10 +6,13 @@ import {
 } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../Redux/Slice/authSlice";
 import PropTypes from "prop-types";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const navItems = [
     {
@@ -30,6 +33,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   ];
 
   const handleLogout = () => {
+    dispatch(logout());
     navigate("/sign-in");
   };
 
