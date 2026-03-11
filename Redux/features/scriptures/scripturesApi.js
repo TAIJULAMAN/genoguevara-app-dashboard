@@ -10,6 +10,13 @@ export const scripturesApi = baseApi.injectEndpoints({
       }),
       providesTags: ["scriptures"],
     }),
+    getScriptureById: builder.query({
+      query: (scriptureId) => ({
+        url: `scriptures/${scriptureId}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: "scriptures", id }],
+    }),
     deleteScriptures: builder.mutation({
       query: (scriptureId) => ({
         url: `scriptures/${scriptureId}`,
@@ -39,6 +46,7 @@ export const scripturesApi = baseApi.injectEndpoints({
 export const {
   useDeleteScripturesMutation,
   useGetAllScripturesQuery,
+  useGetScriptureByIdQuery,
   useCreateScripturesMutation,
   useUpdateScripturesMutation,
 } = scripturesApi;

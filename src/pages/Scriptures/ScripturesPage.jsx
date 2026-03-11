@@ -49,9 +49,16 @@ function ScripturesPage() {
       title: "Content Preview",
       dataIndex: "content",
       key: "content",
-      render: (text) => (
-        <span className="text-gray-500 text-sm italic">{text}</span>
-      ),
+      render: (text) => {
+        const plainText = text?.replace(/<[^>]*>/g, "") || "";
+        return (
+          <span className="text-gray-500 text-sm italic">
+            {plainText.length > 50
+              ? `${plainText.substring(0, 50)}...`
+              : plainText}
+          </span>
+        );
+      },
     },
     {
       title: "Mode",

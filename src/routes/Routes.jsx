@@ -51,6 +51,10 @@ const router = createBrowserRouter([
         element: <AddScripturePage />,
       },
       {
+        path: "/edit-scripture/:id",
+        element: <AddScripturePage />,
+      },
+      {
         path: "/about-us",
         element: <AboutUsPage />,
       },
