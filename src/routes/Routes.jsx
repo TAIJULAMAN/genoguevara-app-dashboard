@@ -11,6 +11,7 @@ import EditProfile from "../pages/profile/EditProfile";
 import ScripturesPage from "../pages/Scriptures/ScripturesPage";
 import AddScripturePage from "../pages/Scriptures/AddScripturePage";
 import AboutUsPage from "../pages/AboutUs/AboutUsPage";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,11 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <AdminRoute>
+        <MainLayout />
+      </AdminRoute>
+    ),
     children: [
       {
         path: "/",
