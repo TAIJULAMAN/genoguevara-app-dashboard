@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoChevronBack } from "react-icons/io5";
 import {
   useGetAboutUsQuery,
-  useCreateAboutUsMutation,
+  useUpdateAboutUsMutation,
 } from "../../../Redux/features/settings/aboutUsApi";
 import { message, Spin } from "antd";
 
@@ -14,7 +14,7 @@ function AboutUs() {
   const navigate = useNavigate();
 
   const { data: aboutData, isLoading: isFetching } = useGetAboutUsQuery();
-  const [createAboutUs, { isLoading: isUpdating }] = useCreateAboutUsMutation();
+  const [updateAboutUs, { isLoading: isUpdating }] = useUpdateAboutUsMutation();
 
   useEffect(() => {
     if (aboutData?.data?.about) {
@@ -24,7 +24,7 @@ function AboutUs() {
 
   const handleSave = async () => {
     try {
-      const res = await createAboutUs({ about: content }).unwrap();
+      const res = await updateAboutUs({ about: content }).unwrap();
       if (res?.success) {
         message.success(res?.message || "About Us updated successfully");
       }

@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { useGetProfileQuery, useUpdateProfileMutation } from "../../../Redux/features/settings/profileApi";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "../../../Redux/features/settings/profileApi";
 import { message, Spin } from "antd";
 
 function EditProfile() {
@@ -10,7 +13,7 @@ function EditProfile() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    contactNo: "",
+    phoneNumber: "",
   });
 
   useEffect(() => {
@@ -18,7 +21,7 @@ function EditProfile() {
       setFormData({
         fullName: user.fullName || "",
         email: user.email || "",
-        contactNo: user.contactNo || "",
+        phoneNumber: user.phoneNumber || "",
       });
     }
   }, [user]);
@@ -30,7 +33,10 @@ function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateProfile({ fullName: formData.fullName }).unwrap();
+      await updateProfile({
+        fullName: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+      }).unwrap();
       message.success("Profile updated successfully");
     } catch (error) {
       message.error(error?.data?.message || "Failed to update profile");
@@ -48,12 +54,12 @@ function EditProfile() {
   return (
     <div className="w-full flex justify-center items-center">
       <div className="bg-white w-full max-w-xl px-4 sm:px-6 md:px-8 py-5 rounded-md border border-gray-200 shadow-sm">
-        <p className="text-[#94CDFA] text-center font-bold text-xl sm:text-2xl mb-5">
+        <p className="text-[#4a3a2a] text-center font-bold text-xl sm:text-2xl mb-5">
           Edit Your Profile
         </p>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold block">
+            <label className="text-sm md:text-base text-[#4a3a2a] mb-2 font-semibold block">
               User Name
             </label>
             <input
@@ -68,7 +74,7 @@ function EditProfile() {
           </div>
 
           <div>
-            <label className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold block">
+            <label className="text-sm md:text-base text-[#4a3a2a] mb-2 font-semibold block">
               Email
             </label>
             <input
@@ -82,24 +88,24 @@ function EditProfile() {
           </div>
 
           <div>
-            <label className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold block">
-              Contact Number
+            <label className="text-sm md:text-base text-[#4a3a2a] mb-2 font-semibold block">
+              Phone Number
             </label>
             <input
               type="text"
-              name="contactNo"
-              value={formData.contactNo}
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-md outline-none placeholder:text-sm md:placeholder:text-base focus:ring-2 focus:ring-[#74AA2E]"
-              placeholder="Enter contact number"
+              placeholder="Enter phone number"
             />
           </div>
 
           <div className="text-center pt-2">
-            <button 
+            <button
               type="submit"
               disabled={isUpdating}
-              className="bg-[#94CDFA] text-white font-semibold w-full py-3 rounded-lg hover:opacity-95 transition disabled:opacity-50"
+              className="bg-[#4a3a2a] text-white font-semibold w-full py-3 rounded-lg hover:opacity-95 transition disabled:opacity-50"
             >
               {isUpdating ? "Saving..." : "Save & Change"}
             </button>

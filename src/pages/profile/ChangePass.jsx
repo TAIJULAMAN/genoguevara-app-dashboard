@@ -10,7 +10,7 @@ function ChangePass() {
     confirm: false,
   });
   const [formData, setFormData] = useState({
-    oldPassword: "",
+    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -31,13 +31,17 @@ function ChangePass() {
       return message.error("Passwords do not match");
     }
     try {
-      await changePassword({ 
-        oldPassword: formData.oldPassword, 
+      await changePassword({
+        currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
-        confirmPassword: formData.confirmPassword
+        confirmPassword: formData.confirmPassword,
       }).unwrap();
       message.success("Password changed successfully");
-      setFormData({ oldPassword: "", newPassword: "", confirmPassword: "" });
+      setFormData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
     } catch (error) {
       message.error(error?.data?.message || "Failed to change password");
     }
@@ -45,19 +49,19 @@ function ChangePass() {
 
   return (
     <div className="bg-white w-full max-w-xl mx-auto px-4 sm:px-6 md:px-8 pt-8 py-5 rounded-md border border-gray-200 shadow-sm">
-      <p className="text-[#94CDFA] text-center font-bold text-xl sm:text-2xl mb-5">
+      <p className="text-[#4a3a2a] text-center font-bold text-xl sm:text-2xl mb-5">
         Change Password
       </p>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="w-full">
-          <label className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold block">
+          <label className="text-sm md:text-base text-[#4a3a2a] mb-2 font-semibold block">
             Current Password
           </label>
           <div className="w-full relative">
             <input
               type={showPassword.current ? "text" : "password"}
-              name="oldPassword"
-              value={formData.oldPassword}
+              name="currentPassword"
+              value={formData.currentPassword}
               onChange={handleChange}
               placeholder="**********"
               className="w-full border border-gray-300 rounded-md outline-none px-4 py-3 placeholder:text-sm md:placeholder:text-base focus:ring-2 focus:ring-[#74AA2E]"
@@ -77,7 +81,7 @@ function ChangePass() {
           </div>
         </div>
         <div className="w-full">
-          <label className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold block">
+          <label className="text-sm md:text-base text-[#4a3a2a] mb-2 font-semibold block">
             New Password
           </label>
           <div className="w-full relative">
@@ -104,7 +108,7 @@ function ChangePass() {
           </div>
         </div>
         <div className="w-full">
-          <label className="text-sm md:text-base text-[#94CDFA] mb-2 font-semibold block">
+          <label className="text-sm md:text-base text-[#4a3a2a] mb-2 font-semibold block">
             Confirm New Password
           </label>
           <div className="w-full relative">
@@ -131,10 +135,10 @@ function ChangePass() {
           </div>
         </div>
         <div className="text-center pt-2">
-          <button 
+          <button
             type="submit"
             disabled={isLoading}
-            className="bg-[#94CDFA] text-white font-semibold w-full py-3 rounded-md hover:opacity-95 transition disabled:opacity-50"
+            className="bg-[#4a3a2a] text-white font-semibold w-full py-3 rounded-md hover:opacity-95 transition disabled:opacity-50"
           >
             {isLoading ? "Saving..." : "Save & Change"}
           </button>

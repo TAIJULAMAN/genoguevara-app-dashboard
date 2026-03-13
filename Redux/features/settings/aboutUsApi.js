@@ -12,7 +12,7 @@ const aboutUsApi = baseApi.injectEndpoints({
 
     updateAboutUs: builder.mutation({
       query: ({ about }) => ({
-        url: "legalDoc/create-doc/aboutUs",
+        url: "common/about",
         method: "PATCH",
         body: { about },
       }),
@@ -21,4 +21,4 @@ const aboutUsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAboutUsQuery, useCreateAboutUsMutation } = aboutUsApi;
+export const { useGetAboutUsQuery, useUpdateAboutUsMutation } = aboutUsApi;

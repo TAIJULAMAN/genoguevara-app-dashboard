@@ -24,8 +24,10 @@ const MainHeader = ({ toggleSidebar }) => {
         <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
           <img
             src={
-              user?.profile_image
-                ? `${imgUrl}${user.profile_image}`
+              user?.profileImage
+                ? user.profileImage.startsWith("http")
+                  ? user.profileImage
+                  : `${imgUrl}/uploads/${user.profileImage}`
                 : "/avatar.png"
             }
             className="w-full h-full object-cover"
